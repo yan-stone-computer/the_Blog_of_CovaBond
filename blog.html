@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="博客文章列表 - 浏览所有文章">
-    <title>博客文章 - 我的个人博客</title>
+    <title>博客文章 - 高俊杰的赛博朋克博客</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
     <header class="header">
         <nav class="nav-container">
             <div class="logo">
-                <a href="index.html">我的博客</a>
+                <a href="index.html">高俊杰的博客</a>
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html">首页</a></li>
                 <li><a href="blog.html" class="active">博客</a></li>
                 <li><a href="index.html#about">关于</a></li>
-                <li><a href="index.html#contact">联系</a></li>
             </ul>
             <button class="menu-toggle" aria-label="菜单">
                 <span></span>
@@ -28,7 +28,7 @@
     </header>
 
     <main>
-        <section class="page-header">
+        <section class="hero" style="padding: 60px 20px;">
             <div class="container">
                 <h1>博客文章</h1>
                 <p>探索技术、分享思考、记录成长</p>
@@ -37,81 +37,15 @@
 
         <section class="blog-section">
             <div class="container">
-                <div class="blog-layout">
-                    <div class="blog-main">
-                        <div class="blog-filters">
-                            <button class="filter-btn active" data-filter="all">全部</button>
-                            <button class="filter-btn" data-filter="tech">技术</button>
-                            <button class="filter-btn" data-filter="life">生活</button>
-                            <button class="filter-btn" data-filter="study">学习</button>
-                        </div>
+                <div class="blog-filters">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="tech">技术</button>
+                    <button class="filter-btn" data-filter="life">生活</button>
+                    <button class="filter-btn" data-filter="study">学习</button>
+                </div>
 
-                        <div class="blog-posts">
-                            <p class="no-posts-message">暂无文章，请先添加文章</p>
-                        </div>
-
-                        <div class="pagination">
-                            <button class="page-btn" disabled>上一页</button>
-                            <span class="page-info">第 1 页 / 共 3 页</span>
-                            <button class="page-btn">下一页</button>
-                        </div>
-                    </div>
-
-                    <aside class="blog-sidebar">
-                        <div class="sidebar-widget">
-                            <h3>搜索文章</h3>
-                            <form class="search-form">
-                                <input type="text" placeholder="输入关键词..." name="search">
-                                <button type="submit">搜索</button>
-                            </form>
-                        </div>
-
-                        <div class="sidebar-widget">
-                            <h3>分类</h3>
-                            <ul class="category-list">
-                                <li><a href="#">技术 <span class="count">(15)</span></a></li>
-                                <li><a href="#">生活 <span class="count">(8)</span></a></li>
-                                <li><a href="#">学习 <span class="count">(12)</span></a></li>
-                            </ul>
-                        </div>
-
-                        <div class="sidebar-widget">
-                            <h3>热门文章</h3>
-                            <ul class="popular-posts">
-                                <li>
-                                    <a href="post.html">
-                                        <span class="rank">1</span>
-                                        JavaScript异步编程详解
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="post.html">
-                                        <span class="rank">2</span>
-                                        CSS Grid布局完全指南
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="post.html">
-                                        <span class="rank">3</span>
-                                        React Hooks最佳实践
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="sidebar-widget">
-                            <h3>标签云</h3>
-                            <div class="tag-cloud">
-                                <a href="#" class="tag">JavaScript</a>
-                                <a href="#" class="tag">CSS</a>
-                                <a href="#" class="tag">React</a>
-                                <a href="#" class="tag">Node.js</a>
-                                <a href="#" class="tag">前端</a>
-                                <a href="#" class="tag">学习</a>
-                                <a href="#" class="tag">生活</a>
-                            </div>
-                        </div>
-                    </aside>
+                <div class="posts-grid">
+                    <p class="no-posts-message">暂无文章，请先添加文章</p>
                 </div>
             </div>
         </section>
@@ -121,8 +55,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>我的博客</h3>
-                    <p>分享技术，记录生活</p>
+                    <h3>高俊杰的博客</h3>
+                    <p>赛博朋克风格个人博客</p>
                 </div>
                 <div class="footer-section">
                     <h3>快速链接</h3>
@@ -134,18 +68,18 @@
                 </div>
                 <div class="footer-section">
                     <h3>联系方式</h3>
-                    <p>Email: example@email.com</p>
-                    <p>GitHub: github.com/yourusername</p>
+                    <p>Email: 3427497074@qq.com</p>
+                    <p>作者: 高俊杰</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 我的个人博客. All rights reserved.</p>
+                <p>&copy; 2026 高俊杰的赛博朋克博客. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
-    <script src="js/blog.js"></script>
     <script src="js/blog-loader.js"></script>
+    <script src="js/blog.js"></script>
 </body>
 </html>
