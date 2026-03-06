@@ -1,0 +1,371 @@
+
+/* 现代化动画效果 */
+@keyframes gradient-shift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes rotateIn {
+    from {
+        opacity: 0;
+        transform: rotate(-180deg) scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+/* 渐变背景动画 */
+.hero {
+    background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #667eea);
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* 卡片悬浮效果 */
+.post-card {
+    animation: slideInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+.post-card:nth-child(1) { animation-delay: 0.1s; }
+.post-card:nth-child(2) { animation-delay: 0.2s; }
+.post-card:nth-child(3) { animation-delay: 0.3s; }
+
+.post-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+}
+
+.post-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.post-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* 按钮动画效果 */
+.btn-primary, .btn-secondary {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-primary::before, .btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before, .btn-secondary:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+}
+
+/* 导航栏动画 */
+.nav-menu a {
+    position: relative;
+}
+
+.nav-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gradient);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.active::after {
+    width: 100%;
+}
+
+/* 滚动显示动画 */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 粒子背景效果 */
+.particles-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 50%;
+    animation: float 10s infinite ease-in-out;
+}
+
+/* 加载动画 */
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--light-gray);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 50px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 图片懒加载动画 */
+.lazy-image {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.lazy-image.loaded {
+    opacity: 1;
+}
+
+/* 视差滚动效果 */
+.parallax-section {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* 文字打字机效果 */
+.typewriter-text {
+    overflow: hidden;
+    border-right: 3px solid var(--primary-color);
+    white-space: nowrap;
+    animation: typewriter 3s steps(40, end), blink 0.75s step-end infinite;
+}
+
+/* 光泽效果 */
+.shimmer-effect {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+}
+
+/* 3D卡片翻转效果 */
+.flip-card {
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    backface-visibility: hidden;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+/* 响应式动画优化 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-gray);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+/* 选中文本样式 */
+::selection {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* 空状态样式 */
+.no-posts-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 18px;
+    animation: slideInUp 0.6s ease;
+}
+
+.no-posts-message::before {
+    content: '📝';
+    font-size: 48px;
+    display: block;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
