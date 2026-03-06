@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{excerpt}">
+    <title>{title} - 我的个人博客</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="../index.html">我的博客</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../index.html#about">关于</a></li>
+                <li><a href="../index.html#contact">联系</a></li>
+            </ul>
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <article class="post-article">
+            <div class="post-header">
+                <div class="container">
+                    <span class="post-category">{category}</span>
+                    <h1>{title}</h1>
+                    <div class="post-meta">
+                        <span class="post-author">作者：{author}</span>
+                        <span class="post-date">{date}</span>
+                        <span class="post-reading-time">{reading_time}分钟阅读</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-content-wrapper">
+                <div class="container">
+                    <div class="post-layout">
+                        <div class="post-main">
+                            <div class="post-featured-image">
+                                <img src="{cover}" alt="{title}">
+                            </div>
+
+                            <div class="post-body">
+                                {content}
+                            </div>
+
+                            <div class="post-tags">
+                                <span class="tag-label">标签：</span>
+                                <a href="#" class="tag">{tags}</a>
+                            </div>
+
+                            <div class="post-share">
+                                <span class="share-label">分享到：</span>
+                                <button class="share-btn" data-platform="weibo">微博</button>
+                                <button class="share-btn" data-platform="wechat">微信</button>
+                                <button class="share-btn" data-platform="twitter">Twitter</button>
+                            </div>
+
+                            <div class="post-author-info">
+                                <div class="author-avatar">
+                                    <img src="https://via.placeholder.com/80x80" alt="作者头像">
+                                </div>
+                                <div class="author-details">
+                                    <h3>{author}</h3>
+                                    <p>全栈开发者，热爱技术分享，专注于Web开发和人工智能领域。</p>
+                                    <div class="author-social">
+                                        <a href="#">GitHub</a>
+                                        <a href="#">Twitter</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="comments-section">
+                                <h3>评论区</h3>
+                                <form class="comment-form">
+                                    <div class="form-group">
+                                        <label for="comment-name">姓名</label>
+                                        <input type="text" id="comment-name" name="name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="comment-email">邮箱</label>
+                                        <input type="email" id="comment-email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="comment-content">评论</label>
+                                        <textarea id="comment-content" name="content" rows="4" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn-primary">发表评论</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <aside class="post-sidebar">
+                            <div class="sidebar-widget">
+                                <h3>热门文章</h3>
+                                <ul class="popular-posts">
+                                    <li>
+                                        <a href="#">
+                                            <span class="rank">1</span>
+                                            JavaScript异步编程详解
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="rank">2</span>
+                                            CSS Grid布局完全指南
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="rank">3</span>
+                                            React Hooks最佳实践
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>我的博客</h3>
+                    <p>分享技术，记录生活</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="../index.html">首页</a></li>
+                        <li><a href="../blog.html">博客</a></li>
+                        <li><a href="../index.html#about">关于</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系方式</h3>
+                    <p>Email: example@email.com</p>
+                    <p>GitHub: github.com/yourusername</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 我的个人博客. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/post.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
