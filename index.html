@@ -2291,7 +2291,8 @@
                 { value: '3', label: '支持平台' },
                 { value: '<2s', label: 'AI响应' }
             ],
-            github: 'https://github.com/yan-stone-computer/polarisnote-official-site',
+            link: 'https://yan-stone-computer.github.io/polarisnote-official-site/',
+            linkText: '访问官网',
             techStack: ['Qt6/QML', 'C++17', 'SQLite', '火山引擎AI', 'Coze Bot', 'RESTful API', 'RAG']
         },
         stellararena: {
@@ -2327,7 +2328,7 @@
                 { value: '16', label: '人格类型' },
                 { value: '35%', label: '分享率' }
             ],
-            github: null,
+            link: null,
             techStack: ['微信小程序', 'Canvas', 'JavaScript', 'Coze AI', 'AIGC', '粒子系统', '力导向图']
         },
         yaobath: {
@@ -2363,7 +2364,8 @@
                 { value: '50+', label: '草药条目' },
                 { value: '85%', label: '分析准确率' }
             ],
-            github: null,
+            link: 'https://yan-stone-computer.github.io/yaobath-data-platform1/index.html',
+            linkText: '查看衍生网站',
             techStack: ['Qt6', 'QML', 'C++', '智谱GLM AI', 'JSON', '本地知识库', '推荐算法']
         },
         garbage: {
@@ -2399,7 +2401,8 @@
                 { value: '4', label: '垃圾类别' },
                 { value: '15MB', label: '安装包体积' }
             ],
-            github: 'https://github.com/yan-stone-computer/garbageClassificationPublicWeb',
+            link: 'https://yan-stone-computer.github.io/garbageClassificationPublicWeb/',
+            linkText: '访问官网',
             techStack: ['Qt6', 'QML', 'C++', 'AI视觉识别', 'Coze API', 'SQLite', 'Android', '多线程']
         },
         imgfix: {
@@ -2435,7 +2438,9 @@
                 { value: '8', label: '功能模块' },
                 { value: '<500ms', label: '4x放大耗时' }
             ],
-            github: null,
+            link: null,
+            tip: 'https://www.bilibili.com/video/BV1yEfSB8EoG/',
+            tipText: '观看视频',
             techStack: ['HarmonyOS NEXT', 'ArkTS', 'ArkUI', '图像处理', 'AI增强', 'SQLite', '后台任务']
         },
         huimayanxiu: {
@@ -2471,7 +2476,7 @@
                 { value: '92%', label: '满意度' },
                 { value: '0元', label: '月运维成本' }
             ],
-            github: null,
+            tip: '微信小程序搜索"慧码验修"',
             techStack: ['微信小程序', '云开发', '云函数', 'Node.js', 'ECharts', 'JWT', 'Socket.io']
         }
     };
@@ -2898,7 +2903,8 @@
                 </div>
 
                 <div class="modal-actions">
-                    ${project.github ? `<a href="${project.github}" target="_blank" class="btn btn-primary">查看源码</a>` : ''}
+                    ${project.link ? `<a href="${project.link}" target="_blank" class="btn btn-primary">${project.linkText || '查看项目'}</a>` : ''}
+                    ${project.tip ? `<button class="btn btn-primary" onclick="window.open('${project.tip}','_blank')">${project.tipText || '了解更多'}</button>` : ''}
                     <button class="btn btn-secondary" onclick="closeModal()">关闭</button>
                 </div>
             </div>
@@ -2906,6 +2912,23 @@
 
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+    }
+
+    function copyAndOpen(url) {
+        navigator.clipboard.writeText(url).then(() => {
+            showToast('链接已复制，正在打开浏览器...');
+            window.open(url, '_blank');
+        }).catch(() => {
+            // fallback
+            const ta = document.createElement('textarea');
+            ta.value = url;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('链接已复制，正在打开浏览器...');
+            window.open(url, '_blank');
+        });
     }
 
     function closeModal() {
