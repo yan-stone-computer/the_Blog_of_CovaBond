@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "title": "欢迎来到我的博客",
     "date": "2026-03-06",
@@ -10,7 +10,7 @@
     ],
     "excerpt": "这是我的第一篇博客文章，记录了我创建这个博客的初衷和未来的规划",
     "cover": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800",
-    "author": "高俊杰",
+    "author": "CovaBond",
     "reading_time": "3",
     "slug": "欢迎来到我的博客",
     "url": "posts/欢迎来到我的博客.html"
