@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarmonyOS ArkTS开发入门与架构设计 - CovaBond</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header {
+            padding: 160px 0 80px;
+            text-align: center;
+            background: var(--bg-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        .post-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(240, 192, 64, 0.1) 0%, transparent 70%);
+        }
+        .post-meta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .post-category {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .post-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            max-width: 900px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.2;
+        }
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .post-content h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 3rem 0 1.5rem;
+            color: var(--text-primary);
+        }
+        .post-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--accent);
+        }
+        .post-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .post-content ul, .post-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .post-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .post-content code {
+            background: rgba(240, 192, 64, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        .post-content pre {
+            background: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .post-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+        .highlight-box {
+            background: rgba(240, 192, 64, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+        .tech-stack span {
+            padding: 0.5rem 1rem;
+            background: rgba(240, 192, 64, 0.1);
+            border: 1px solid rgba(240, 192, 64, 0.2);
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-text">CovaBond</span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../index.html#about">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+        <header class="post-header">
+            <div class="post-meta">
+                <span class="post-category">鸿蒙开发</span>
+                <span>2026-05-06</span>
+                <span>阅读时间 10 分钟</span>
+            </div>
+            <h1 class="post-title">HarmonyOS ArkTS开发入门与架构设计</h1>
+            <div class="tech-stack">
+                <span>HarmonyOS</span>
+                <span>ArkTS</span>
+                <span>ArkUI</span>
+                <span>声明式UI</span>
+            </div>
+        </header>
+
+        <div class="post-content">
+            <p>在智旅修记项目中，我使用HarmonyOS NEXT和ArkTS开发了原生鸿蒙应用。作为华为推出的新一代操作系统，HarmonyOS提供了独特的技术栈和开发范式。本文将分享ArkTS开发的核心知识和实践经验。</p>
+
+            <h2>为什么选择HarmonyOS？</h2>
+            <p>HarmonyOS NEXT(纯血鸿蒙)是华为推出的全场景分布式操作系统，具有以下特点：</p>
+            <ul>
+                <li><strong>原生性能</strong>：不再依赖Android兼容层，性能更优</li>
+                <li><strong>一次开发，多端部署</strong>：支持手机、平板、车机、智能穿戴等多设备</li>
+                <li><strong>分布式能力</strong>：跨设备协同、流转、共享</li>
+                <li><strong>ArkTS语言</strong>：基于TypeScript，前端开发者上手快</li>
+            </ul>
+
+            <h2>ArkTS核心特性</h2>
+            <p>ArkTS是鸿蒙应用开发的主力语言，在TypeScript基础上进行了扩展：</p>
+
+            <div class="highlight-box">
+                <strong>ArkTS增强特性：</strong>
+                <ul>
+                    <li><strong>声明式UI</strong>：使用装饰器语法定义组件和状态</li>
+                    <li><strong>状态管理</strong>：@State、@Prop、@Link、@Provide等装饰器</li>
+                    <li><strong>并发模型</strong>：TaskPool和Worker多线程方案</li>
+                    <li><strong>类型安全</strong>：严格的类型检查，编译期发现问题</li>
+                </ul>
+            </div>
+
+            <h3>基础组件示例</h3>
+            <pre><code>@Entry
+@Component
+struct Index {
+  @State message: string = 'Hello HarmonyOS'
+  
+  build() {
+    Column({ space: 20 }) {
+      Text(this.message)
+        .fontSize(24)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#FF2D78')
+      
+      Button('点击我')
+        .width(200)
+        .height(50)
+        .backgroundColor('#00F0FF')
+        .onClick(() => {
+          this.message = '欢迎使用智旅修记'
+        })
+    }
+    .width('100%')
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
+  }
+}</code></pre>
+
+            <h2>状态管理详解</h2>
+            <p>状态管理是ArkTS开发的核心，理解各种装饰器的使用场景至关重要：</p>
+
+            <h3>@State - 组件内部状态</h3>
+            <pre><code>@Component
+struct Counter {
+  @State count: number = 0
+  
+  build() {
+    Column() {
+      Text(`计数: ${this.count}`)
+        .fontSize(20)
+      
+      Button('增加')
+        .onClick(() => {
+          this.count++  // 状态变化自动触发UI更新
+        })
+    }
+  }
+}</code></pre>
+
+            <h3>@Prop - 父子组件单向同步</h3>
+            <pre><code>// 父组件
+@Entry
+@Component
+struct Parent {
+  @State parentCount: number = 10
+  
+  build() {
+    Column() {
+      Child({ childCount: this.parentCount })
+    }
+  }
+}
+
+// 子组件
+@Component
+struct Child {
+  @Prop childCount: number  // 从父组件接收，单向同步
+  
+  build() {
+    Button(`子组件: ${this.childCount}`)
+      .onClick(() => {
+        this.childCount++  // 只影响子组件
+      })
+  }
+}</code></pre>
+
+            <h3>@Link - 父子组件双向同步</h3>
+            <pre><code>@Component
+struct TwoWayBinding {
+  @Link value: number
+  
+  build() {
+    Slider({
+      value: $$this.value,  // 双向绑定语法
+      min: 0,
+      max: 100
+    })
+  }
+}
+
+// 使用
+TwoWayBinding({ value: this.$parentValue })</code></pre>
+
+            <h2>智旅修记架构设计</h2>
+            <p>智旅修记采用分层架构设计，将UI、业务逻辑和数据层清晰分离：</p>
+
+            <h3>1. 项目结构</h3>
+            <pre><code>entry/src/main/ets/
+├── entryability/          # Ability(页面生命周期管理)
+├── pages/                 # 页面组件
+│   ├── Index.ets
+│   ├── ImageFix.ets
+│   ├── TravelPlan.ets
+│   └── Mine.ets
+├── components/            # 可复用组件
+├── services/              # 业务服务层
+│   ├── ImageService.ets
+│   ├── TravelService.ets
+│   └── WeatherService.ets
+├── models/                # 数据模型
+├── utils/                 # 工具函数
+└── resources/             # 资源文件</code></pre>
+
+            <h3>2. 图片修复服务实现</h3>
+            <pre><code>// services/ImageService.ets
+import { http } from '@kit.NetworkKit'
+
+export class ImageService {
+  private baseUrl: string = 'https://api.example.com/image'
+  
+  // 图像去雾
+  async dehaze(imageUri: string): Promise&lt;string&gt; {
+    const response = await http.createHttp().request(
+      `${this.baseUrl}/dehaze`,
+      {
+        method: http.RequestMethod.POST,
+        header: { 'Content-Type': 'application/json' },
+        extraData: { image: imageUri }
+      }
+    )
+    
+    if (response.responseCode === 200) {
+      const result = JSON.parse(response.result as string)
+      return result.processedImageUrl
+    }
+    throw new Error('去雾处理失败')
+  }
+  
+  // 超分辨率
+  async superResolution(imageUri: string, scale: number = 2): Promise&lt;string&gt; {
+    const response = await http.createHttp().request(
+      `${this.baseUrl}/sr`,
+      {
+        method: http.RequestMethod.POST,
+        extraData: { 
+          image: imageUri,
+          scale: scale  // 2x 或 4x
+        }
+      }
+    )
+    
+    return JSON.parse(response.result as string).resultUrl
+  }
+}</code></pre>
+
+            <h3>3. 页面状态管理</h3>
+            <pre><code>// pages/ImageFix.ets
+import { ImageService } from '../services/ImageService'
+
+@Entry
+@Component
+struct ImageFix {
+  @State selectedImage: string = ''
+  @State isProcessing: boolean = false
+  @State resultImage: string = ''
+  @State currentMode: FixMode = FixMode.DEHAZE
+  
+  private imageService: ImageService = new ImageService()
+  
+  enum FixMode {
+    DEHAZE,
+    SUPER_RESOLUTION
+  }
+  
+  build() {
+    Column({ space: 16 }) {
+      // 图片选择区域
+      ImageSelector({
+        imageUri: this.selectedImage,
+        onImageSelected: (uri) => this.selectedImage = uri
+      })
+      
+      // 模式选择
+      Row({ space: 12 }) {
+        ModeButton({
+          text: '去雾',
+          isSelected: this.currentMode === FixMode.DEHAZE,
+          onClick: () => this.currentMode = FixMode.DEHAZE
+        })
+        
+        ModeButton({
+          text: '超分辨率',
+          isSelected: this.currentMode === FixMode.SUPER_RESOLUTION,
+          onClick: () => this.currentMode = FixMode.SUPER_RESOLUTION
+        })
+      }
+      
+      // 处理按钮
+      Button(this.isProcessing ? '处理中...' : '开始修复')
+        .enabled(!this.isProcessing && this.selectedImage !== '')
+        .onClick(() => this.processImage())
+      
+      // 结果展示
+      if (this.resultImage !== '') {
+        Image(this.resultImage)
+          .width('100%')
+          .height(300)
+          .objectFit(ImageFit.Contain)
+      }
+    }
+    .padding(16)
+  }
+  
+  async processImage() {
+    this.isProcessing = true
+    try {
+      if (this.currentMode === FixMode.DEHAZE) {
+        this.resultImage = await this.imageService.dehaze(this.selectedImage)
+      } else {
+        this.resultImage = await this.imageService.superResolution(this.selectedImage)
+      }
+    } catch (error) {
+      promptAction.showToast({ message: '处理失败: ' + error.message })
+    } finally {
+      this.isProcessing = false
+    }
+  }
+}</code></pre>
+
+            <h2>数据持久化</h2>
+            <p>使用AppStorage和LocalStorage实现数据持久化：</p>
+
+            <pre><code>// 全局状态存储
+import { AppStorageV2 } from '@kit.ArkUI'
+
+// 定义旅行计划数据类
+@ObservedV2
+class TravelPlan {
+  @Trace id: number
+  @Trace destination: string
+  @Trace startDate: Date
+  @Trace endDate: Date
+  @Trace budget: number
+  
+  constructor(id: number, destination: string) {
+    this.id = id
+    this.destination = destination
+    this.startDate = new Date()
+    this.endDate = new Date()
+    this.budget = 0
+  }
+}
+
+// 存储管理类
+class StorageManager {
+  static readonly PLAN_KEY = 'travel_plans'
+  
+  // 保存计划
+  static savePlans(plans: TravelPlan[]) {
+    AppStorageV2.set(StorageManager.PLAN_KEY, plans)
+    // 同步到本地存储
+    const context = getContext()
+    const path = context.filesDir + '/plans.json'
+    fs.write(path, JSON.stringify(plans))
+  }
+  
+  // 读取计划
+  static getPlans(): TravelPlan[] {
+    return AppStorageV2.get(StorageManager.PLAN_KEY) || []
+  }
+}</code></pre>
+
+            <h2>后台任务处理</h2>
+            <p>图片处理等耗时操作需要在后台执行，避免阻塞UI：</p>
+
+            <pre><code>import { taskpool } from '@kit.ArkTS'
+
+// 定义后台任务
+@Concurrent
+function processImageInBackground(imageData: ArrayBuffer): ArrayBuffer {
+  // 在子线程执行图像处理算法
+  const processed = applyDehazeAlgorithm(imageData)
+  return processed
+}
+
+// 调用后台任务
+async function processImage(imageUri: string) {
+  const imageData = await loadImageData(imageUri)
+  
+  // 提交到任务池
+  const task = new taskpool.Task(processImageInBackground, imageData)
+  const result = await taskpool.execute(task)
+  
+  return saveProcessedImage(result)
+}</code></pre>
+
+            <h2>性能优化技巧</h2>
+
+            <h3>1. 组件复用</h3>
+            <pre><code>List({ space: 12 }) {
+  LazyForEach(this.dataSource, (item: TravelPlan) => {
+    ListItem() {
+      PlanCard({ plan: item })
+    }
+    .reuseId('plan_card')  // 设置复用标识
+  })
+}
+.cachedCount(5)  // 预加载5个item</code></pre>
+
+            <h3>2. 图片优化</h3>
+            <pre><code>Image('https://example.com/large.jpg')
+  .width('100%')
+  .height(200)
+  .objectFit(ImageFit.Cover)
+  .alt($r('app.media.placeholder'))  // 占位图
+  .loadPriority(ImageLoadPriority.High)  // 加载优先级</code></pre>
+
+            <h3>3. 状态更新优化</h3>
+            <ul>
+                <li>避免在循环中直接修改@State</li>
+                <li>批量更新状态后再触发UI刷新</li>
+                <li>使用@ObjectLink管理复杂对象</li>
+            </ul>
+
+            <h2>总结</h2>
+            <p>HarmonyOS ArkTS为开发者提供了现代化的声明式UI开发体验。通过合理的状态管理、分层架构和性能优化，可以构建出流畅的原生鸿蒙应用。随着鸿蒙生态的不断完善，ArkTS将成为跨设备开发的重要技术栈。</p>
+
+            <p>建议开发者从官方示例项目入手，逐步掌握ArkTS的核心概念和最佳实践。</p>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 2rem;">
+                <p class="footer-copyright">&copy; 2026 CovaBond. All rights reserved.</p>
+                <a href="../blog.html" class="btn btn-secondary">返回博客</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

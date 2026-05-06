@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI大模型集成指南：火山引擎与Coze Bot实战 - CovaBond</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header {
+            padding: 160px 0 80px;
+            text-align: center;
+            background: var(--bg-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        .post-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(0, 240, 255, 0.1) 0%, transparent 70%);
+        }
+        .post-meta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .post-category {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        .post-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            max-width: 900px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.2;
+        }
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .post-content h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 3rem 0 1.5rem;
+            color: var(--text-primary);
+        }
+        .post-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--secondary);
+        }
+        .post-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .post-content ul, .post-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .post-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .post-content code {
+            background: rgba(0, 240, 255, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            color: var(--secondary);
+        }
+        .post-content pre {
+            background: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .post-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+        .highlight-box {
+            background: rgba(0, 240, 255, 0.05);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+        .tech-stack span {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            color: var(--secondary);
+        }
+        .workflow-diagram {
+            background: var(--bg-tertiary);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .workflow-step {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--secondary);
+            border-radius: var(--radius-md);
+            margin: 0.5rem;
+        }
+        .workflow-arrow {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-text">CovaBond</span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../index.html#about">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+        <header class="post-header">
+            <div class="post-meta">
+                <span class="post-category">AI集成</span>
+                <span>2026-05-06</span>
+                <span>阅读时间 12 分钟</span>
+            </div>
+            <h1 class="post-title">AI大模型集成指南：火山引擎与Coze Bot实战</h1>
+            <div class="tech-stack">
+                <span>火山引擎</span>
+                <span>Coze Bot</span>
+                <span>REST API</span>
+                <span>RAG</span>
+                <span>AI对话</span>
+            </div>
+        </header>
+
+        <div class="post-content">
+            <p>在天枢便签、智能垃圾分类、竞语星河等项目中，我深度集成了火山引擎大模型和Coze Bot AI能力。本文将分享AI大模型集成的实战经验，包括API调用、知识库构建、对话流设计等核心技术。</p>
+
+            <h2>AI集成方案选型</h2>
+            <p>在选择AI服务提供商时，我主要考虑了以下几个维度：</p>
+            <ul>
+                <li><strong>模型能力</strong>：文本生成、图像理解、多轮对话等</li>
+                <li><strong>响应速度</strong>：首token延迟、流式输出支持</li>
+                <li><strong>成本控制</strong>：token定价、免费额度</li>
+                <li><strong>易用性</strong>：SDK支持、文档完善度</li>
+            </ul>
+
+            <p>最终选择了<strong>火山引擎</strong>作为主力大模型服务，<strong>Coze Bot</strong>作为对话工作流编排平台。</p>
+
+            <h2>火山引擎大模型集成</h2>
+
+            <h3>1. API认证与初始化</h3>
+            <pre><code>import requests
+import json
+
+class VolcanoEngineClient:
+    def __init__(self, api_key, model="doubao-pro-32k"):
+        self.api_key = api_key
+        self.model = model
+        self.base_url = "https://ark.cn-beijing.volces.com/api/v3"
+        
+    def chat_completion(self, messages, stream=False):
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        data = {
+            "model": self.model,
+            "messages": messages,
+            "stream": stream,
+            "temperature": 0.7,
+            "max_tokens": 2000
+        }
+        
+        response = requests.post(
+            f"{self.base_url}/chat/completions",
+            headers=headers,
+            json=data,
+            stream=stream
+        )
+        
+        return response</code></pre>
+
+            <h3>2. 流式输出实现</h3>
+            <p>为了提供更好的用户体验，AI回复采用流式输出，逐字显示：</p>
+            <pre><code>def stream_chat(self, messages, callback):
+    """流式对话，callback接收每个token"""
+    response = self.chat_completion(messages, stream=True)
+    
+    full_response = ""
+    for line in response.iter_lines():
+        if line:
+            line = line.decode('utf-8')
+            if line.startswith('data: '):
+                data = line[6:]
+                if data == '[DONE]':
+                    break
+                try:
+                    chunk = json.loads(data)
+                    delta = chunk['choices'][0]['delta']
+                    if 'content' in delta:
+                        content = delta['content']
+                        full_response += content
+                        callback(content)  # 实时更新UI
+                except:
+                    pass
+    
+    return full_response</code></pre>
+
+            <h3>3. 带上下文的对话</h3>
+            <div class="highlight-box">
+                <strong>对话上下文管理策略：</strong>
+                <ul>
+                    <li>维护最近N轮对话历史（通常5-10轮）</li>
+                    <li>计算token数量，超出限制时裁剪最早的消息</li>
+                    <li>系统提示词(system prompt)始终保留</li>
+                </ul>
+            </div>
+
+            <pre><code>class ConversationManager:
+    def __init__(self, max_history=10):
+        self.messages = []
+        self.max_history = max_history
+        
+    def set_system_prompt(self, prompt):
+        """设置系统提示词"""
+        self.messages = [{"role": "system", "content": prompt}]
+        
+    def add_user_message(self, content):
+        """添加用户消息"""
+        self.messages.append({"role": "user", "content": content})
+        self._trim_history()
+        
+    def add_assistant_message(self, content):
+        """添加助手回复"""
+        self.messages.append({"role": "assistant", "content": content})
+        
+    def _trim_history(self):
+        """裁剪历史记录，保留系统提示和最近N轮"""
+        if len(self.messages) > self.max_history * 2 + 1:
+            # 保留system + 最近N轮
+            self.messages = [self.messages[0]] + \
+                          self.messages[-(self.max_history * 2):]
+    
+    def get_messages(self):
+        return self.messages</code></pre>
+
+            <h2>Coze Bot 工作流编排</h2>
+
+            <p>Coze平台提供了可视化的Bot编排能力，我在竞语星河中使用Coze构建了"星宝AI助手"：</p>
+
+            <h3>Bot设计要点</h3>
+            <div class="workflow-diagram">
+                <div class="workflow-step">用户输入</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">意图识别</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">知识检索</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">大模型生成</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">回复输出</div>
+            </div>
+
+            <h3>Coze API集成</h3>
+            <pre><code>class CozeClient:
+    def __init__(self, api_key, bot_id):
+        self.api_key = api_key
+        self.bot_id = bot_id
+        self.base_url = "https://api.coze.cn"
+        
+    def chat(self, query, conversation_id=None, user_id="default"):
+        """调用Coze Bot进行对话"""
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        data = {
+            "bot_id": self.bot_id,
+            "user": user_id,
+            "query": query,
+            "stream": False
+        }
+        
+        if conversation_id:
+            data["conversation_id"] = conversation_id
+            
+        response = requests.post(
+            f"{self.base_url}/open_api/v2/chat",
+            headers=headers,
+            json=data
+        )
+        
+        result = response.json()
+        return {
+            "reply": result.get("messages", [{}])[0].get("content", ""),
+            "conversation_id": result.get("conversation_id")
+        }</code></pre>
+
+            <h2>RAG知识库构建</h2>
+
+            <p>在天枢便签中，我实现了基于RAG(Retrieval-Augmented Generation)的知识库问答功能：</p>
+
+            <h3>知识库架构</h3>
+            <div class="highlight-box">
+                <strong>RAG流程：</strong>
+                <ol>
+                    <li>文档切分：将长文档切分为适当长度的chunk</li>
+                    <li>向量化：使用embedding模型将文本转为向量</li>
+                    <li>向量存储：存入向量数据库(如Milvus、Pinecone)</li>
+                    <li>语义检索：根据查询向量检索相关文档</li>
+                    <li>增强生成：将检索结果作为上下文输入大模型</li>
+                </ol>
+            </div>
+
+            <h3>向量检索实现</h3>
+            <pre><code>class KnowledgeBase:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.documents = []  # 简化示例，实际使用向量数据库
+        self.embeddings = []
+        
+    def add_document(self, text, metadata=None):
+        """添加文档到知识库"""
+        embedding = self._get_embedding(text)
+        self.documents.append({
+            "text": text,
+            "metadata": metadata
+        })
+        self.embeddings.append(embedding)
+        
+    def _get_embedding(self, text):
+        """获取文本向量表示"""
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        response = requests.post(
+            "https://ark.cn-beijing.volces.com/api/v3/embeddings",
+            headers=headers,
+            json={"model": "doubao-embedding", "input": text}
+        )
+        
+        return response.json()["data"][0]["embedding"]
+    
+    def search(self, query, top_k=3):
+        """语义搜索相关文档"""
+        query_embedding = self._get_embedding(query)
+        
+        # 计算余弦相似度
+        similarities = []
+        for doc_embedding in self.embeddings:
+            sim = self._cosine_similarity(query_embedding, doc_embedding)
+            similarities.append(sim)
+            
+        # 返回最相关的文档
+        top_indices = np.argsort(similarities)[-top_k:][::-1]
+        return [self.documents[i] for i in top_indices]
+    
+    def _cosine_similarity(self, a, b):
+        return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))</code></pre>
+
+            <h2>AI图像识别实战</h2>
+
+            <p>智能垃圾分类项目的核心功能是AI图像识别，以下是完整实现：</p>
+
+            <pre><code>class ImageRecognitionService:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        
+    def recognize(self, image_path):
+        """识别图片中的垃圾类别"""
+        # 1. 图片预处理
+        processed_image = self._preprocess_image(image_path)
+        
+        # 2. 转换为base64
+        base64_image = self._image_to_base64(processed_image)
+        
+        # 3. 构建提示词
+        prompt = """请识别图片中的垃圾类别，按以下JSON格式返回：
+{
+    "category": "可回收物/有害垃圾/厨余垃圾/其他垃圾",
+    "confidence": 0.95,
+    "explanation": "分类理由说明",
+    "suggestions": ["处理建议1", "处理建议2"]
+}"""
+        
+        # 4. 调用多模态模型
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
+                ]
+            }
+        ]
+        
+        response = self.client.chat_completion(messages)
+        return self._parse_response(response)
+        
+    def _preprocess_image(self, image_path, max_size=1024):
+        """图片预处理：压缩、格式转换"""
+        image = Image.open(image_path)
+        
+        # 等比缩放
+        if max(image.size) > max_size:
+            ratio = max_size / max(image.size)
+            new_size = (int(image.size[0] * ratio), int(image.size[1] * ratio))
+            image = image.resize(new_size, Image.Resampling.LANCZOS)
+            
+        # 转换为RGB
+        if image.mode != 'RGB':
+            image = image.convert('RGB')
+            
+        return image
+        
+    def _image_to_base64(self, image):
+        import io
+        buffer = io.BytesIO()
+        image.save(buffer, format='JPEG', quality=85)
+        return base64.b64encode(buffer.getvalue()).decode()</code></pre>
+
+            <h2>错误处理与降级策略</h2>
+
+            <div class="highlight-box">
+                <strong>AI服务稳定性保障：</strong>
+                <ul>
+                    <li>超时重试：设置合理的超时时间，失败自动重试</li>
+                    <li>降级方案：主服务不可用时切换到备用模型</li>
+                    <li>限流保护：防止突发流量导致服务不可用</li>
+                    <li>缓存机制：对常见查询结果进行缓存</li>
+                </ul>
+            </div>
+
+            <pre><code>class AIClientWithFallback:
+    def __init__(self, primary_client, fallback_client):
+        self.primary = primary_client
+        self.fallback = fallback_client
+        self.retry_count = 3
+        self.timeout = 30
+        
+    def chat(self, messages):
+        """带降级策略的对话"""
+        for attempt in range(self.retry_count):
+            try:
+                return self.primary.chat_completion(
+                    messages, 
+                    timeout=self.timeout
+                )
+            except TimeoutError:
+                if attempt < self.retry_count - 1:
+                    time.sleep(2 ** attempt)  # 指数退避
+                    continue
+                    
+        # 主服务失败，使用降级方案
+        print("Primary service failed, using fallback...")
+        return self.fallback.chat_completion(messages)</code></pre>
+
+            <h2>总结</h2>
+            <p>AI大模型集成已经成为现代应用开发的标配能力。通过合理选择服务商、设计稳定的调用策略、构建RAG知识库，可以为用户提供智能化的交互体验。火山引擎和Coze平台提供了完善的API和工具链，大大降低了AI集成的门槛。</p>
+
+            <p>在实际项目中，建议从小场景开始试点，逐步积累提示词工程和模型调优的经验。</p>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 2rem;">
+                <p class="footer-copyright">&copy; 2026 CovaBond. All rights reserved.</p>
+                <a href="../blog.html" class="btn btn-secondary">返回博客</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

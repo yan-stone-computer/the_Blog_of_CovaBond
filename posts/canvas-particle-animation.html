@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas粒子动画与赛博朋克视觉设计 - CovaBond</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .post-header {
+            padding: 160px 0 80px;
+            text-align: center;
+            background: var(--bg-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        .post-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(255, 45, 120, 0.1) 0%, transparent 70%);
+        }
+        .post-meta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .post-category {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .post-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            max-width: 900px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.2;
+        }
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        .post-content h2 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 3rem 0 1.5rem;
+            color: var(--text-primary);
+        }
+        .post-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--secondary);
+        }
+        .post-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .post-content ul, .post-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .post-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .post-content code {
+            background: rgba(255, 45, 120, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            color: var(--primary);
+        }
+        .post-content pre {
+            background: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+        .post-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+        .highlight-box {
+            background: rgba(255, 45, 120, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+        .tech-stack span {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 45, 120, 0.1);
+            border: 1px solid rgba(255, 45, 120, 0.2);
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="logo-text">CovaBond</span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../blog.html">博客</a></li>
+                <li><a href="../index.html#about">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+        <header class="post-header">
+            <div class="post-meta">
+                <span class="post-category">前端动画</span>
+                <span>2026-05-06</span>
+                <span>阅读时间 10 分钟</span>
+            </div>
+            <h1 class="post-title">Canvas粒子动画与赛博朋克视觉设计</h1>
+            <div class="tech-stack">
+                <span>Canvas</span>
+                <span>JavaScript</span>
+                <span>粒子系统</span>
+                <span>赛博朋克</span>
+            </div>
+        </header>
+
+        <div class="post-content">
+            <p>在竞语星河项目中，我使用Canvas实现了一套赛博朋克风格的粒子动画系统。本文将分享粒子动画的核心原理、性能优化技巧，以及如何打造沉浸式的赛博朋克视觉体验。</p>
+
+            <h2>赛博朋克视觉风格</h2>
+            <p>赛博朋克(Cyberpunk)是一种科幻美学风格，具有以下视觉特征：</p>
+            <ul>
+                <li><strong>霓虹配色</strong>：高饱和度的粉色、青色、紫色</li>
+                <li><strong>深色背景</strong>：黑色或深灰色为主色调</li>
+                <li><strong>网格线条</strong>：透视网格营造空间感</li>
+                <li><strong>故障效果</strong>：Glitch艺术、扫描线</li>
+                <li><strong>发光元素</strong>：霓虹光晕、发光边框</li>
+            </ul>
+
+            <h2>粒子系统基础</h2>
+            <p>粒子系统是计算机图形学中模拟模糊现象的技术，如火焰、烟雾、星光等。</p>
+
+            <h3>粒子类设计</h3>
+            <pre><code>class Particle {
+  constructor(x, y, options = {}) {
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) * options.speed || 1;
+    this.vy = (Math.random() - 0.5) * options.speed || 1;
+    this.radius = options.radius || Math.random() * 3 + 1;
+    this.color = options.color || '#FF2D78';
+    this.life = 1; // 生命值 1-0
+    this.decay = options.decay || 0.01;
+    this.glow = options.glow || false;
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life -= this.decay;
+    
+    // 边界反弹
+    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+
+  draw(ctx) {
+    ctx.save();
+    ctx.globalAlpha = this.life;
+    
+    // 发光效果
+    if (this.glow) {
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = this.color;
+    }
+    
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  isDead() {
+    return this.life <= 0;
+  }
+}</code></pre>
+
+            <h3>粒子管理器</h3>
+            <pre><code>class ParticleSystem {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.particles = [];
+    this.maxParticles = 200; // 性能控制
+  }
+
+  emit(x, y, count = 1, options = {}) {
+    for (let i = 0; i < count; i++) {
+      if (this.particles.length >= this.maxParticles) {
+        this.particles.shift(); // 移除最老的粒子
+      }
+      this.particles.push(new Particle(x, y, options));
+    }
+  }
+
+  update() {
+    this.particles = this.particles.filter(p => {
+      p.update();
+      return !p.isDead();
+    });
+  }
+
+  draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.particles.forEach(p => p.draw(this.ctx));
+  }
+
+  animate() {
+    this.update();
+    this.draw();
+    requestAnimationFrame(() => this.animate());
+  }
+}</code></pre>
+
+            <h2>力导向图算法</h2>
+            <p>在竞语星河中，节点之间通过引力相互连接，形成动态网络：</p>
+
+            <pre><code>class ForceDirectedGraph {
+  constructor(nodes, links) {
+    this.nodes = nodes.map(n => ({
+      ...n,
+      vx: 0,
+      vy: 0,
+      x: Math.random() * width,
+      y: Math.random() * height
+    }));
+    this.links = links;
+  }
+
+  update() {
+    // 1. 节点间斥力
+    for (let i = 0; i < this.nodes.length; i++) {
+      for (let j = i + 1; j < this.nodes.length; j++) {
+        const dx = this.nodes[j].x - this.nodes[i].x;
+        const dy = this.nodes[j].y - this.nodes[i].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist > 0 && dist < 200) {
+          const force = 1000 / (dist * dist);
+          const fx = (dx / dist) * force;
+          const fy = (dy / dist) * force;
+          
+          this.nodes[i].vx -= fx;
+          this.nodes[i].vy -= fy;
+          this.nodes[j].vx += fx;
+          this.nodes[j].vy += fy;
+        }
+      }
+    }
+
+    // 2. 连线引力
+    this.links.forEach(link => {
+      const source = this.nodes[link.source];
+      const target = this.nodes[link.target];
+      
+      const dx = target.x - source.x;
+      const dy = target.y - source.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      
+      const force = (dist - 100) * 0.01; // 目标距离100px
+      const fx = (dx / dist) * force;
+      const fy = (dy / dist) * force;
+      
+      source.vx += fx;
+      source.vy += fy;
+      target.vx -= fx;
+      target.vy -= fy;
+    });
+
+    // 3. 中心引力（防止飞散）
+    this.nodes.forEach(node => {
+      const dx = centerX - node.x;
+      const dy = centerY - node.y;
+      node.vx += dx * 0.0001;
+      node.vy += dy * 0.0001;
+      
+      // 速度衰减
+      node.vx *= 0.9;
+      node.vy *= 0.9;
+      
+      // 更新位置
+      node.x += node.vx;
+      node.y += node.vy;
+    });
+  }
+
+  draw(ctx) {
+    // 绘制连线
+    this.links.forEach(link => {
+      const source = this.nodes[link.source];
+      const target = this.nodes[link.target];
+      
+      ctx.beginPath();
+      ctx.moveTo(source.x, source.y);
+      ctx.lineTo(target.x, target.y);
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // 绘制节点
+    this.nodes.forEach(node => {
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, node.radius || 5, 0, Math.PI * 2);
+      ctx.fillStyle = node.color || '#00F0FF';
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = node.color || '#00F0FF';
+      ctx.fill();
+    });
+  }
+}</code></pre>
+
+            <h2>触摸交互效果</h2>
+            <p>添加触摸交互，让粒子跟随手指移动：</p>
+
+            <pre><code>// 触摸粒子效果
+class TouchParticleEffect {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.particles = [];
+    this.touchX = null;
+    this.touchY = null;
+    
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    this.canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      this.touchX = touch.clientX;
+      this.touchY = touch.clientY;
+      this.emit(5);
+    });
+
+    this.canvas.addEventListener('mousemove', (e) => {
+      this.touchX = e.clientX;
+      this.touchY = e.clientY;
+      this.emit(2);
+    });
+  }
+
+  emit(count) {
+    for (let i = 0; i < count; i++) {
+      this.particles.push({
+        x: this.touchX + (Math.random() - 0.5) * 20,
+        y: this.touchY + (Math.random() - 0.5) * 20,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        life: 1,
+        color: ['#FF2D78', '#00F0FF', '#F0C040'][Math.floor(Math.random() * 3)]
+      });
+    }
+  }
+
+  update() {
+    this.particles = this.particles.filter(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= 0.02;
+      return p.life > 0;
+    });
+  }
+
+  draw() {
+    this.particles.forEach(p => {
+      this.ctx.save();
+      this.ctx.globalAlpha = p.life;
+      this.ctx.shadowBlur = 10;
+      this.ctx.shadowColor = p.color;
+      this.ctx.fillStyle = p.color;
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.restore();
+    });
+  }
+}</code></pre>
+
+            <h2>性能优化技巧</h2>
+
+            <div class="highlight-box">
+                <strong>Canvas性能优化要点：</strong>
+                <ul>
+                    <li><strong>粒子数量控制</strong>：移动端不超过200个，桌面端不超过500个</li>
+                    <li><strong>分层渲染</strong>：背景、粒子、UI分层，减少重绘区域</li>
+                    <li><strong>离屏Canvas</strong>：静态元素预先渲染到离屏Canvas</li>
+                    <li><strong>requestAnimationFrame</strong>：使用RAF代替setInterval</li>
+                    <li><strong>对象池</strong>：复用粒子对象，减少GC压力</li>
+                </ul>
+            </div>
+
+            <h3>对象池模式</h3>
+            <pre><code>class ParticlePool {
+  constructor(size) {
+    this.pool = [];
+    this.active = [];
+    
+    // 预创建粒子
+    for (let i = 0; i < size; i++) {
+      this.pool.push(new Particle());
+    }
+  }
+
+  get() {
+    if (this.pool.length > 0) {
+      const particle = this.pool.pop();
+      this.active.push(particle);
+      return particle;
+    }
+    return null; // 池已满
+  }
+
+  release(particle) {
+    const index = this.active.indexOf(particle);
+    if (index > -1) {
+      this.active.splice(index, 1);
+      this.pool.push(particle);
+    }
+  }
+
+  reset() {
+    this.pool.push(...this.active);
+    this.active.length = 0;
+  }
+}</code></pre>
+
+            <h2>赛博朋克特效</h2>
+
+            <h3>扫描线效果</h3>
+            <pre><code>function drawScanlines(ctx, width, height) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+  
+  for (let y = 0; y < height; y += 4) {
+    ctx.fillRect(0, y, width, 2);
+  }
+  
+  ctx.restore();
+}</code></pre>
+
+            <h3>霓虹发光文字</h3>
+            <pre><code>function drawNeonText(ctx, text, x, y) {
+  ctx.save();
+  
+  // 外发光
+  ctx.shadowColor = '#FF2D78';
+  ctx.shadowBlur = 30;
+  ctx.fillStyle = '#FF2D78';
+  ctx.font = 'bold 48px Arial';
+  ctx.fillText(text, x, y);
+  
+  // 内发光
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(text, x, y);
+  
+  ctx.restore();
+}</code></pre>
+
+            <h2>总结</h2>
+            <p>Canvas粒子动画可以创造出极具视觉冲击力的效果，但需要注意性能优化。在实际项目中，要根据目标设备合理控制粒子数量，使用对象池减少内存分配，并采用分层渲染策略。赛博朋克风格的视觉设计需要精心调配色彩和光影，才能营造出沉浸式的未来感体验。</p>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 2rem;">
+                <p class="footer-copyright">&copy; 2026 CovaBond. All rights reserved.</p>
+                <a href="../blog.html" class="btn btn-secondary">返回博客</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
