@@ -700,22 +700,33 @@
             50% { filter: hue-rotate(30deg) blur(15px); }
         }
 
-        .project-image {
+        .project-icon {
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.1), rgba(0, 240, 255, 0.1));
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .project-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        .project-icon svg {
+            width: 80px;
+            height: 80px;
+            color: var(--neon-pink);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.8;
         }
 
-        .project-card:hover .project-image img {
-            transform: scale(1.1);
+        .project-card:hover .project-icon {
+            background: linear-gradient(135deg, rgba(255, 45, 120, 0.2), rgba(0, 240, 255, 0.2));
+        }
+
+        .project-card:hover .project-icon svg {
+            transform: scale(1.2) rotate(5deg);
+            opacity: 1;
+            color: var(--neon-blue);
+            filter: drop-shadow(0 0 20px var(--neon-blue));
         }
 
         .project-content {
@@ -1881,8 +1892,14 @@
         <div class="projects-grid">
             <!-- 项目1: 天枢便签 -->
             <article class="project-card reveal" data-project="polarisnote">
-                <div class="project-image">
-                    <img src="images/projects/polarisnote.png" alt="天枢便签">
+                <div class="project-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
                 </div>
                 <div class="project-content">
                     <div class="project-category">AI Note App</div>
@@ -1898,8 +1915,10 @@
 
             <!-- 项目2: 竞语星河 -->
             <article class="project-card reveal" data-project="stellararena">
-                <div class="project-image">
-                    <img src="images/projects/stellararena.png" alt="竞语星河">
+                <div class="project-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
                 </div>
                 <div class="project-content">
                     <div class="project-category">Esports Social</div>
@@ -1915,8 +1934,10 @@
 
             <!-- 项目3: 瑶浴健康助手 -->
             <article class="project-card reveal" data-project="yaobath">
-                <div class="project-image">
-                    <img src="images/projects/yaobath.png" alt="瑶浴健康助手">
+                <div class="project-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
                 </div>
                 <div class="project-content">
                     <div class="project-category">Health Platform</div>
@@ -1932,8 +1953,13 @@
 
             <!-- 项目4: 智能垃圾分类 -->
             <article class="project-card reveal" data-project="garbage">
-                <div class="project-image">
-                    <img src="images/projects/garbage.png" alt="智能垃圾分类">
+                <div class="project-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        <line x1="10" y1="11" x2="10" y2="17"/>
+                        <line x1="14" y1="11" x2="14" y2="17"/>
+                    </svg>
                 </div>
                 <div class="project-content">
                     <div class="project-category">AI Vision</div>
@@ -1949,8 +1975,12 @@
 
             <!-- 项目5: 智旅修记 -->
             <article class="project-card reveal" data-project="imgfix">
-                <div class="project-image">
-                    <img src="images/projects/imgfix.png" alt="智旅修记">
+                <div class="project-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
                 </div>
                 <div class="project-content">
                     <div class="project-category">Travel Assistant</div>
@@ -1966,8 +1996,14 @@
 
             <!-- 项目6: 慧码验修 -->
             <article class="project-card reveal" data-project="huimayanxiu">
-                <div class="project-image">
-                    <img src="images/projects/huimayanxiu.jpg" alt="慧码验修">
+                <div class="project-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
                 </div>
                 <div class="project-content">
                     <div class="project-category">Management System</div>
@@ -2369,7 +2405,7 @@
         imgfix: {
             category: 'HarmonyOS原生旅行助手',
             title: '智旅修记',
-            image: 'images/projects/imgfix.png',
+            image: 'images/projects/imgfix.webp',
             overview: '为HarmonyOS NEXT生态开发的旅行助手应用，提供图片去雾、超分辨率修复、旅行相册管理、行程规划、费用记录、天气查询、景区知识搜索等一站式旅行服务。项目采用ArkTS语言和ArkUI框架，充分利用HarmonyOS原生能力。',
             situation: 'HarmonyOS NEXT作为新兴操作系统，原生应用生态有待完善；旅行场景下用户需要图片修复、行程管理、知识查询等多功能整合工具。',
             task: '开发一款HarmonyOS原生旅行助手，集成图片AI修复、行程规划、费用管理等核心功能，UI流畅度达到60fps。',
@@ -2405,7 +2441,7 @@
         huimayanxiu: {
             category: '微信小程序工单管理系统',
             title: '慧码验修',
-            image: 'images/projects/huimayanxiu.jpg',
+            image: 'images/projects/huimayanxiu.webp',
             overview: '面向高校/企业维修场景的工单管理系统，包含用户端（提交报修、查看订单）、维修工端（接单处理）和管理员端（数据统计、人员管理）三大角色。采用微信云开发架构，实现零服务器成本运维。',
             situation: '传统报修流程效率低下：用户报修渠道分散、维修工接单不及时、管理员缺乏数据支撑；需要数字化系统提升管理效率。',
             task: '设计并实现三端协同的维修工单管理系统，支持工单全流程跟踪、智能派单、数据统计分析，降低运维成本。',
@@ -2819,9 +2855,6 @@
         }
 
         modalBody.innerHTML = `
-            <div class="modal-image">
-                <img src="${project.image}" alt="${project.title}">
-            </div>
             <div class="modal-info">
                 <div class="modal-category">${project.category}</div>
                 <h2 class="modal-title">${project.title}</h2>
