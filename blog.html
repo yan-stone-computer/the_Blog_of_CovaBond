@@ -3,24 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="博客文章列表 - 浏览所有文章">
-    <title>博客文章 - 高俊杰的赛博朋克博客</title>
+    <meta name="description" content="博客文章列表 - 浏览所有技术文章">
+    <title>博客文章 - CovaBond的博客</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .blog-header {
+            padding: 140px 0 60px;
+            text-align: center;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+        .blog-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .blog-header p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+        .blog-toolbar {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .toolbar-content {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .search-box {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+        .search-box svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+        }
+        .search-box input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-full);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 45, 120, 0.1);
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .filter-tab {
+            padding: 0.625rem 1.25rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-full);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .filter-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .filter-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        .blog-section {
+            padding: 3rem 0 6rem;
+        }
+        .blog-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .blog-post-item {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-base);
+        }
+        .blog-post-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        .post-thumbnail {
+            aspect-ratio: 16/10;
+            overflow: hidden;
+        }
+        .post-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-slow);
+        }
+        .blog-post-item:hover .post-thumbnail img {
+            transform: scale(1.05);
+        }
+        .post-info {
+            padding: 1.5rem 1.5rem 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .post-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 45, 120, 0.1);
+            border: 1px solid rgba(255, 45, 120, 0.2);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            width: fit-content;
+        }
+        .post-info h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+        .post-info h2 a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+        .post-info h2 a:hover {
+            color: var(--primary);
+        }
+        .post-excerpt {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+        .post-meta-row {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        .post-meta-row span {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        .post-tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .post-tag {
+            padding: 0.25rem 0.625rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        @media (max-width: 768px) {
+            .blog-post-item {
+                grid-template-columns: 1fr;
+            }
+            .post-info {
+                padding: 1.5rem;
+            }
+            .post-thumbnail {
+                aspect-ratio: 2/1;
+            }
+            .toolbar-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                min-width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
+    <!-- 导航栏 -->
+    <header class="header" id="header">
         <nav class="nav-container">
             <div class="logo">
-                <a href="index.html">高俊杰的博客</a>
+                <a href="index.html">
+                    <span class="logo-text">CovaBond</span>
+                </a>
             </div>
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html">首页</a></li>
                 <li><a href="blog.html" class="active">博客</a></li>
                 <li><a href="index.html#about">关于</a></li>
-                <li><button class="nav-add-btn" id="nav-add-btn" title="新建文章">+</button></li>
+                <li>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
+                        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </li>
             </ul>
-            <button class="menu-toggle" aria-label="菜单">
+            <button class="menu-toggle" id="menu-toggle" aria-label="菜单">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -29,125 +255,353 @@
     </header>
 
     <main>
-        <section class="hero" style="padding: 60px 20px;">
+        <!-- 页面头部 -->
+        <section class="blog-header">
             <div class="container">
                 <h1>博客文章</h1>
-                <p>探索技术、分享思考、记录成长</p>
+                <p>从项目实践中提炼的核心技术</p>
             </div>
         </section>
 
+        <!-- 搜索和筛选工具栏 -->
+        <section class="blog-toolbar">
+            <div class="container">
+                <div class="toolbar-content">
+                    <div class="search-box">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" id="search-input" placeholder="搜索文章...">
+                    </div>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">全部</button>
+                        <button class="filter-tab" data-filter="tech">技术实战</button>
+                        <button class="filter-tab" data-filter="ai">AI集成</button>
+                        <button class="filter-tab" data-filter="mobile">移动端</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文章列表 -->
         <section class="blog-section">
             <div class="container">
-                <div class="blog-filters">
-                    <button class="filter-btn active" data-filter="all">全部</button>
-                    <button class="filter-btn" data-filter="tech">技术</button>
-                    <button class="filter-btn" data-filter="life">生活</button>
-                    <button class="filter-btn" data-filter="study">学习</button>
-                </div>
-
-                <div class="posts-grid">
-                    <article class="blog-post-item" data-category="tech">
+                <div class="blog-list" id="blog-list">
+                    <!-- 文章1: Qt6 QML跨平台开发 -->
+                    <article class="blog-post-item" data-category="tech" data-tags="Qt6,QML,C++,跨平台">
                         <div class="post-thumbnail">
-                            <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800" alt="迭代式加盐慢哈希">
+                            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800" alt="Qt6 QML开发">
+                        </div>
+                        <div class="post-info">
+                            <span class="post-category">技术实战</span>
+                            <h2><a href="posts/qt6-qml-cross-platform-development.html">Qt6 QML跨平台开发实战：从桌面到移动端</a></h2>
+                            <p class="post-excerpt">分享使用Qt6 QML开发天枢便签、智能垃圾分类等项目的实战经验，包括MVVM架构设计、跨平台适配策略、网络请求与异步处理等核心技术。</p>
+                            <div class="post-meta-row">
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    2026-05-06
+                                </span>
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    15 分钟阅读
+                                </span>
+                                <div class="post-tags">
+                                    <span class="post-tag">Qt6</span>
+                                    <span class="post-tag">QML</span>
+                                    <span class="post-tag">跨平台</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 文章2: AI大模型集成 -->
+                    <article class="blog-post-item" data-category="ai" data-tags="AI,火山引擎,Coze,RAG">
+                        <div class="post-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800" alt="AI大模型">
+                        </div>
+                        <div class="post-info">
+                            <span class="post-category">AI集成</span>
+                            <h2><a href="posts/ai-integration-guide-volcano-coze.html">AI大模型集成指南：火山引擎与Coze Bot实战</a></h2>
+                            <p class="post-excerpt">深度讲解AI大模型集成方案，包括火山引擎API调用、Coze Bot工作流编排、RAG知识库构建、流式输出实现等核心技术，附带完整的Python实现代码。</p>
+                            <div class="post-meta-row">
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    2026-05-06
+                                </span>
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    12 分钟阅读
+                                </span>
+                                <div class="post-tags">
+                                    <span class="post-tag">AI</span>
+                                    <span class="post-tag">火山引擎</span>
+                                    <span class="post-tag">RAG</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 文章3: HarmonyOS开发 -->
+                    <article class="blog-post-item" data-category="mobile" data-tags="HarmonyOS,ArkTS,ArkUI">
+                        <div class="post-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800" alt="HarmonyOS开发">
+                        </div>
+                        <div class="post-info">
+                            <span class="post-category">移动端</span>
+                            <h2><a href="posts/harmonyos-arkts-development.html">HarmonyOS ArkTS开发入门与架构设计</a></h2>
+                            <p class="post-excerpt">基于智旅修记项目，分享HarmonyOS NEXT原生应用开发经验，涵盖ArkTS核心特性、状态管理、分层架构、数据持久化等实战技巧。</p>
+                            <div class="post-meta-row">
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    2026-05-06
+                                </span>
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    10 分钟阅读
+                                </span>
+                                <div class="post-tags">
+                                    <span class="post-tag">HarmonyOS</span>
+                                    <span class="post-tag">ArkTS</span>
+                                    <span class="post-tag">移动端</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 文章4: 微信小程序云开发 -->
+                    <article class="blog-post-item" data-category="mobile" data-tags="微信小程序,云开发,多端协同">
+                        <div class="post-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800" alt="微信小程序">
+                        </div>
+                        <div class="post-info">
+                            <span class="post-category">小程序开发</span>
+                            <h2><a href="posts/wechat-miniprogram-cloud-development.html">微信小程序云开发实战：多端协同架构设计</a></h2>
+                            <p class="post-excerpt">基于慧码验修项目，讲解微信小程序云开发架构，包括云函数、数据库设计、多端权限控制、智能派单算法、实时通知推送等核心技术。</p>
+                            <div class="post-meta-row">
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    2026-05-06
+                                </span>
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    12 分钟阅读
+                                </span>
+                                <div class="post-tags">
+                                    <span class="post-tag">微信小程序</span>
+                                    <span class="post-tag">云开发</span>
+                                    <span class="post-tag">多端协同</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 文章5: Canvas粒子动画 -->
+                    <article class="blog-post-item" data-category="tech" data-tags="Canvas,JavaScript,粒子系统">
+                        <div class="post-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?w=800" alt="Canvas动画">
+                        </div>
+                        <div class="post-info">
+                            <span class="post-category">前端动画</span>
+                            <h2><a href="posts/canvas-particle-animation.html">Canvas粒子动画与赛博朋克视觉设计</a></h2>
+                            <p class="post-excerpt">基于竞语星河项目，分享Canvas粒子系统实现原理，包括力导向图算法、触摸交互效果、性能优化技巧，以及赛博朋克风格的视觉设计方法。</p>
+                            <div class="post-meta-row">
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    2026-05-06
+                                </span>
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    10 分钟阅读
+                                </span>
+                                <div class="post-tags">
+                                    <span class="post-tag">Canvas</span>
+                                    <span class="post-tag">JavaScript</span>
+                                    <span class="post-tag">粒子系统</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 文章6: 密码安全 -->
+                    <article class="blog-post-item" data-category="tech" data-tags="密码学,安全,Python">
+                        <div class="post-thumbnail">
+                            <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800" alt="密码安全">
                         </div>
                         <div class="post-info">
                             <span class="post-category">技术</span>
                             <h2><a href="posts/iterative-salted-hash-password-security.html">迭代式加盐慢哈希 - 密码安全存储最佳实践</a></h2>
-                            <p class="post-excerpt">深入讲解密码哈希的原理，包括加盐和慢哈希的重要性，以及如何使用 Argon2 算法在 Python 和 C++ Qt 中实现安全的密码存储</p>
-                            <div class="post-meta">
-                                <span class="post-date">2026-03-08</span>
-                                <span class="post-reading-time">10分钟阅读</span>
+                            <p class="post-excerpt">深入讲解密码哈希的原理，包括加盐和慢哈希的重要性，以及如何使用 Argon2 算法在 Python 和 C++ Qt 中实现安全的密码存储。</p>
+                            <div class="post-meta-row">
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    2026-03-08
+                                </span>
+                                <span>
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    10 分钟阅读
+                                </span>
+                                <div class="post-tags">
+                                    <span class="post-tag">密码学</span>
+                                    <span class="post-tag">安全</span>
+                                    <span class="post-tag">Python</span>
+                                </div>
                             </div>
                         </div>
                     </article>
+                </div>
+
+                <!-- 空状态 -->
+                <div class="empty-state" id="empty-state" style="display: none;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <h3>未找到相关文章</h3>
+                    <p>尝试使用其他关键词搜索</p>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- 页脚 -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>高俊杰的博客</h3>
-                    <p>赛博朋克风格个人博客</p>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>CovaBond</h3>
+                    <p>探索技术边界，创造无限可能。记录学习历程，分享技术心得。</p>
                 </div>
-                <div class="footer-section">
-                    <h3>快速链接</h3>
-                    <ul>
+                <div class="footer-links-col">
+                    <h4 class="footer-title">导航</h4>
+                    <ul class="footer-links">
                         <li><a href="index.html">首页</a></li>
                         <li><a href="blog.html">博客</a></li>
                         <li><a href="index.html#about">关于</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h3>联系方式</h3>
-                    <p>Email: 3427497074@qq.com</p>
-                    <p>作者: 高俊杰</p>
+                <div class="footer-links-col">
+                    <h4 class="footer-title">链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://github.com/yan-stone-computer" target="_blank">GitHub</a></li>
+                        <li><a href="mailto:3427497074@qq.com">联系我</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 高俊杰的赛博朋克博客. All rights reserved.</p>
+                <p class="footer-copyright">&copy; 2026 CovaBond. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-
-
-    <div class="post-modal" id="post-modal">
-        <div class="post-modal-content">
-            <div class="post-modal-header">
-                <h2>📝 添加新文章</h2>
-                <button class="close-modal" id="close-modal">&times;</button>
-            </div>
-            <div class="post-modal-body">
-                <form id="article-form">
-                    <div class="form-group">
-                        <label for="title">文章标题 *</label>
-                        <input type="text" id="title" name="title" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="category">分类 *</label>
-                            <select id="category" name="category" required>
-                                <option value="">选择分类</option>
-                                <option value="技术">技术</option>
-                                <option value="生活">生活</option>
-                                <option value="学习">学习</option>
-                                <option value="其他">其他</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tags">标签</label>
-                            <input type="text" id="tags" name="tags" placeholder="用逗号分隔">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="excerpt">文章摘要 *</label>
-                        <input type="text" id="excerpt" name="excerpt" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cover">封面图片</label>
-                        <div class="cover-upload">
-                            <input type="text" id="cover" name="cover" placeholder="图片URL或上传">
-                            <button type="button" id="upload-cover-btn" class="upload-btn">上传</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="content">文章内容 (Markdown) *</label>
-                        <textarea id="content" name="content" rows="10" required></textarea>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn-cancel" id="cancel-btn">取消</button>
-                        <button type="submit" class="btn-submit">💾 保存</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <script src="js/main.js"></script>
-    <script src="js/blog.js"></script>
-    <script src="js/post-editor.js"></script>
+    <script>
+        // 搜索和筛选功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const blogPosts = document.querySelectorAll('.blog-post-item');
+            const emptyState = document.getElementById('empty-state');
+            const blogList = document.getElementById('blog-list');
+            
+            let currentFilter = 'all';
+            
+            // 搜索功能
+            searchInput.addEventListener('input', function() {
+                filterPosts();
+            });
+            
+            // 筛选功能
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    filterPosts();
+                });
+            });
+            
+            function filterPosts() {
+                const searchTerm = searchInput.value.toLowerCase();
+                let visibleCount = 0;
+                
+                blogPosts.forEach(post => {
+                    const title = post.querySelector('h2 a').textContent.toLowerCase();
+                    const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
+                    const category = post.dataset.category;
+                    const tags = post.dataset.tags.toLowerCase();
+                    
+                    const matchesSearch = title.includes(searchTerm) || 
+                                         excerpt.includes(searchTerm) ||
+                                         tags.includes(searchTerm);
+                    const matchesFilter = currentFilter === 'all' || category === currentFilter;
+                    
+                    if (matchesSearch && matchesFilter) {
+                        post.style.display = 'grid';
+                        visibleCount++;
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+                
+                // 显示/隐藏空状态
+                if (visibleCount === 0) {
+                    emptyState.style.display = 'block';
+                    blogList.style.display = 'none';
+                } else {
+                    emptyState.style.display = 'none';
+                    blogList.style.display = 'flex';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
